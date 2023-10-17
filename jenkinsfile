@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your source code repository (e.g., Git)
+                checkout scm
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                // Compile your Java code
+                sh 'javac -source 1.8 -target 1.8 -d ./target ./src/*.java'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests, if you have them
+                sh 'java -cp ./target org.junit.runner.JUnitCore YourTestClassName'
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                // Archive the compiled code or JAR file
+                archiveArtifacts artifacts: 'target/*.class', allowEmptyArchive: true
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy your compiled application (e.g., to a web server)
+                // This step will depend on your deployment process
+            }
+        }
+    }
+}
