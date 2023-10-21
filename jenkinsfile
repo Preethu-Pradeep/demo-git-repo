@@ -5,9 +5,11 @@ pipeline {
 
         stage('Compile') {
             steps {
-                // Compile your Java code
-                echo " Hello"
+              script
+                  {
+                //Compile your Java code
+                echo " compile"
+                sh"mvn compile" }}
             }
         }
     }
-}
