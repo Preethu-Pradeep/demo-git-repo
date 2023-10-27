@@ -20,38 +20,6 @@ pipeline {
     }
 
     stages {
-        stage('Compile') {
-            agent any
-            steps {
-                script{
-                     echo 'COMPIEL-Hello World'
-                     echo "compile in env: ${params.Env}"
-                     sh "mvn compile"
-                }
-               
-            }
-        }
-         stage('UnitTest') {
-            //agent {label 'linux_slave'}
-            agent any
-            when{
-                expression{
-                    params.executeTests == true
-                }
-            }
-            steps {
-                script{
-                     echo 'UNITTEST-Hello World'
-                     sh "mvn test"
-                }
-               
-            }
-            post{
-                always{
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
          stage('Package') {
             agent any
             steps {
