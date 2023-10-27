@@ -16,7 +16,7 @@ pipeline {
     environment{
         DEV_SERVER='ec2-user@172.31.42.164'
         DEPLOY_SERVER='ec2-user@172.31.14.64'
-        IMAGE_NAME='preethupradeep/private-repo/'
+        IMAGE_NAME='preethupradeep/private-repo'
     }
 
     stages {
