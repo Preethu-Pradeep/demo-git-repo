@@ -11,47 +11,17 @@ pipeline{
     //     choice(name:'APPVERSION',choices:['1.1','1.2','1.3'])
     // }
     environment{
-        DEV_SERVER='ec2-user@172.31.15.80'
+        DEV_SERVER='ec2-user@172.31.43.89'
         //TEST_SERVER='ec2-user@172.31.39.69'
-        IMAGE_NAME='devopstrainer/java-mvn-privaterepos'
+        IMAGE_NAME='preethupradeep/private-repo'
     }
 
     stages{
-        stage('compile'){
-            agent any
-            steps{
-                script{
-                   echo "Compile the Code"
-                    //echo "Deploying to env: ${params.Env}"
-                    sh "mvn compile"
-                }
-            }
-        }
-        stage('UnitTest'){
-            //s agent {label 'linux_slave'}
-            agent any
-            // when{
-            //     expression{
-            //         params.executeTests == true
-            //     }
-            // }
-            steps{
-                script{
-                    echo "Run the UnitTest Cases"
-                    sh "mvn test"
-                }
-            }
-            post{
-                always{
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
         stage('BUILDING THE DOCKERIMAGE'){
             agent any
             steps{
                 script{
-                    sshagent(['DEV_SERVER_PACKING']) {
+                    sshagent(['aws-key']) {
                         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     echo "Package the Code"
                     //echo "Packing the code version ${params.APPVERSION}"
@@ -101,7 +71,7 @@ pipeline{
                     //echo "Packing the code version ${params.APPVERSION}"
                  echo "Waiting for ec2 instance to initialise"
                  //sleep(time: 90, unit: "SECONDS")
-                sshagent(['DEV_SERVER_PACKING']) {
+                sshagent(['aws-key']) {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                 echo "Deploying to Test"
                 sh "ssh  -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} sudo yum install docker -y"
