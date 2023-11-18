@@ -21,7 +21,7 @@ pipeline{
             agent any
             steps{
                 script{
-                    sshagent(['preethu-aws']) {
+                    sshagent(['aws-key']) {
                         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     echo "Package the Code"
                     //echo "Packing the code version ${params.APPVERSION}"
@@ -67,7 +67,7 @@ pipeline{
                     //echo "Packing the code version ${params.APPVERSION}"
                  echo "Waiting for ec2 instance to initialise"
                  //sleep(time: 90, unit: "SECONDS")
-                sshagent(['preethu-aws']) {
+                sshagent(['aws-key']) {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                 echo "Deploying to Test"
                 sh "ssh  -o StrictHostKeyChecking=no ec2-user@${EC2_PUBLIC_IP} sudo yum install docker -y"
