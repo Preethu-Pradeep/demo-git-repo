@@ -11,7 +11,7 @@ pipeline{
     //     choice(name:'APPVERSION',choices:['1.1','1.2','1.3'])
     // }
     environment{
-        DEV_SERVER='ec2-user@172.31.43.89'
+        DEV_SERVER='ec2-user@172.31.0.54'
         //TEST_SERVER='ec2-user@172.31.39.69'
         IMAGE_NAME='preethupradeep/private-repo'
     }
